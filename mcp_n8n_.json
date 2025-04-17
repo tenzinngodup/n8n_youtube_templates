@@ -1,0 +1,200 @@
+{
+  "name": "mcp_n8n_",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "c70363d7-31da-492e-a708-99d77da1aab5"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        -160
+      ],
+      "id": "71152620-f0e5-4062-809d-87211f5c9998",
+      "name": "MCP Server Trigger",
+      "webhookId": "c70363d7-31da-492e-a708-99d77da1aab5"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JhkK6f6Hftvi1esET082qGVkundgi-4mE0b9c7v90VU",
+          "mode": "list",
+          "cachedResultName": "task_status_n8n_dummy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JhkK6f6Hftvi1esET082qGVkundgi-4mE0b9c7v90VU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        -200,
+        40
+      ],
+      "id": "5c49c255-bb04-4482-bb86-fed97f858e1a",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "f3SVpOhjbfM3ez0X",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JhkK6f6Hftvi1esET082qGVkundgi-4mE0b9c7v90VU",
+          "mode": "list",
+          "cachedResultName": "task_status_n8n_dummy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JhkK6f6Hftvi1esET082qGVkundgi-4mE0b9c7v90VU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JhkK6f6Hftvi1esET082qGVkundgi-4mE0b9c7v90VU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID', ``, 'string') }}",
+            "Task Description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_Description', ``, 'string') }}",
+            "Assigned To": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Assigned_To', ``, 'string') }}",
+            "Status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Status', ``, 'string') }}",
+            "AI Summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('AI_Summary', ``, 'string') }}",
+            "Notes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Notes', ``, 'string') }}",
+            "Created At": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Created_At', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Task Description",
+              "displayName": "Task Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assigned To",
+              "displayName": "Assigned To",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Summary",
+              "displayName": "AI Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created At",
+              "displayName": "Created At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        80,
+        60
+      ],
+      "id": "9d388f17-5d59-4ba4-b8fa-abaf60a37bc2",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "f3SVpOhjbfM3ez0X",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5edb8654-b9f2-4c18-b968-4449806dae4c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "95e9c29d7484fb753591208164faef581226a94efc6e32d268397da791e3efe7"
+  },
+  "id": "n5jBP7a6DnGGsDuz",
+  "tags": []
+}
