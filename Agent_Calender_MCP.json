@@ -1,0 +1,135 @@
+{
+  "name": "Agent_Calender_MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2424a28c-26b8-44c9-aa53-ba328fd0c9b0",
+      "name": "When chat message received",
+      "webhookId": "19191c13-b68a-4434-af61-75eff461e365"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a helpful assistant.\n\nCurrent datetime is {{ $now.toString() }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "b74c8f62-181b-4c73-ad50-449624cf85e4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        120,
+        240
+      ],
+      "id": "522fde43-546a-4eb4-ac4c-7edfb9e2abeb",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tC6vJVOy81BDeAJ0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Learn How to Build an MCP Server and Client",
+        "height": 80,
+        "width": 800,
+        "color": 4
+      },
+      "id": "48858b47-233c-4501-bff6-a667de278b3a",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        -140
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://primary-production-54ab9.up.railway.app/mcp/34c4dbd4-04ca-429a-a447-9de5c62c8819/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        460,
+        220
+      ],
+      "id": "a2762b45-1280-4a38-92cf-60162aead733",
+      "name": "Calendar MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "381b5751-f8bf-48e5-b336-f9f3f6e1e887",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "95e9c29d7484fb753591208164faef581226a94efc6e32d268397da791e3efe7"
+  },
+  "id": "RWazw3u56UxaKcu1",
+  "tags": []
+}
