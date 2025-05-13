@@ -1,0 +1,650 @@
+{
+  "name": "Market Research Agent-Reddit",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Search the latest posts and comments from the following subreddits: r/smallbusiness, r/Entrepreneur, r/startups, r/smallbusinessuk.\nIdentify the top 5 unique frustrations or pain points small business owners are discussing in the last 24 hours.\nFor each, provide:\n\npainpoint: a short name for the pain point\n\ndescription: a 1-2 sentence summary of the issue\n\nsolution: a practical solution or business idea to solve it\n\nindustry: the relevant industry or sector\n\npainpoint_category: a 1-3 word category for the pain point\n\nsource_thread: the Reddit thread URL (or permalink)\n\nOutput ONLY a JSON array in the following format:\n\njson\n[\n  {\n    \"painpoint\": \"\",\n    \"description\": \"\",\n    \"solution\": \"\",\n    \"industry\": \"\",\n    \"painpoint_category\": \"\",\n    \"source_thread\": \"\"\n  }\n]\nDo not include any explanation or text outside the JSON array.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=you are an expert business analyst. Your job is to analyze Reddit posts and comments from small business-related subreddits and extract actionable pain points and solutions for new business ideas. Always output your findings in the specified JSON format."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -308,
+        -20
+      ],
+      "id": "491ee481-c487-44db-9e26-2ac029b4616e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        200
+      ],
+      "id": "7a60a299-f38b-48c1-9192-40fb3a2c2ef1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tC6vJVOy81BDeAJ0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "subreddit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subreddit', ``, 'string') }}",
+        "keyword": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Keyword', ``, 'string') }}",
+        "limit": 10,
+        "additionalFields": {
+          "sort": "relevance"
+        }
+      },
+      "type": "n8n-nodes-base.redditTool",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        200
+      ],
+      "id": "ac6582ab-6270-46c3-a39f-aa476116388f",
+      "name": "Reddit",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "NmJobAaeLnMVyYtI",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1saRKrfoFpCyzNLFuFxVf-DpcLaVSqpteH66wYg2kMVY",
+          "mode": "list",
+          "cachedResultName": "LeadDB_Companies_US",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1saRKrfoFpCyzNLFuFxVf-DpcLaVSqpteH66wYg2kMVY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 738908247,
+          "mode": "list",
+          "cachedResultName": "painpoint",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1saRKrfoFpCyzNLFuFxVf-DpcLaVSqpteH66wYg2kMVY/edit#gid=738908247"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "painpoint": "={{ $json.painpoint }}",
+            "solution": "={{ $json.solution }}",
+            "industry ": "={{ $json.industry }}",
+            "sub catagory": "={{ $json.painpoint_category }}",
+            "subreddit": "={{ $json.source_thread }}",
+            "description": "={{ $json.description }}"
+          },
+          "matchingColumns": [
+            "painpoint"
+          ],
+          "schema": [
+            {
+              "id": "painpoint",
+              "displayName": "painpoint",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "industry ",
+              "displayName": "industry ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "solution",
+              "displayName": "solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sub catagory",
+              "displayName": "sub catagory",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "subreddit",
+              "displayName": "subreddit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Column 1",
+              "displayName": "Column 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 2",
+              "displayName": "Column 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 3",
+              "displayName": "Column 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 4",
+              "displayName": "Column 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 5",
+              "displayName": "Column 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 6",
+              "displayName": "Column 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 7",
+              "displayName": "Column 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 8",
+              "displayName": "Column 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 9",
+              "displayName": "Column 9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 10",
+              "displayName": "Column 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 11",
+              "displayName": "Column 11",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 12",
+              "displayName": "Column 12",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 13",
+              "displayName": "Column 13",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 14",
+              "displayName": "Column 14",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 15",
+              "displayName": "Column 15",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 16",
+              "displayName": "Column 16",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 17",
+              "displayName": "Column 17",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 18",
+              "displayName": "Column 18",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 19",
+              "displayName": "Column 19",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 20",
+              "displayName": "Column 20",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Column 21",
+              "displayName": "Column 21",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        600,
+        -20
+      ],
+      "id": "d479b7b3-0cee-46bf-b818-2278432ae985",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "f3SVpOhjbfM3ez0X",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"painpoint\": \"customer management\",\n    \"description\": \"Small business owners struggle to track client interactions, follow-ups, and history across different channels.\",\n    \"solution\": \"Simple interface customer management solution\",\n    \"industry\": \"CRM / SaaS\",\n    \"painpoint_category\": \"process bottleneck\",\n    \"source_thread\": \"https://www.reddit.com/r/smallbusiness/comments/abc123/how_do_you_keep_track_of_customers/\"\n  },\n  {\n    \"painpoint\": \"manual data entry\",\n    \"description\": \"Teams waste hours copying data between forms, CRMs, and spreadsheets, often introducing human error.\",\n    \"solution\": \"Automated data capture and entry workflow\",\n    \"industry\": \"Data Entry / Back Office\",\n    \"painpoint_category\": \"automation\",\n    \"source_thread\": \"https://www.reddit.com/r/automation/comments/def456/data_entry_is_killing_my_productivity/\"\n  },\n  {\n    \"painpoint\": \"slow response times\",\n    \"description\": \"Customers complain about delays in support replies, especially outside office hours, leading to churn.\",\n    \"solution\": \"Real-time AI-based customer support system\",\n    \"industry\": \"Customer Support\",\n    \"painpoint_category\": \"response speed\",\n    \"source_thread\": \"https://www.reddit.com/r/startups/comments/ghi789/our_support_is_too_slow_any_suggestions/\"\n  },\n  {\n    \"painpoint\": \"confusing dashboard UI\",\n    \"description\": \"Users can't find key metrics or tools due to overly complex dashboards with poor hierarchy and layout.\",\n    \"solution\": \"Clean and minimalistic dashboard redesign\",\n    \"industry\": \"SaaS / Analytics\",\n    \"painpoint_category\": \"UX/UI design\",\n    \"source_thread\": \"https://www.reddit.com/r/userexperience/comments/jkl012/why_are_dashboards_always_so_bad/\"\n  },\n  {\n    \"painpoint\": \"inconsistent onboarding experience\",\n    \"description\": \"New users drop off because they aren't guided clearly through the first few steps after signing up.\",\n    \"solution\": \"Step-by-step interactive onboarding flow\",\n    \"industry\": \"HR Tech\",\n    \"painpoint_category\": \"user retention\",\n    \"source_thread\": \"https://www.reddit.com/r/entrepreneur/comments/mno345/our_onboarding_is_confusing_users/\"\n  },\n  {\n    \"painpoint\": \"lack of team collaboration tools\",\n    \"description\": \"Remote teams often rely on multiple tools that don’t sync well, causing miscommunication and task delays.\",\n    \"solution\": \"Integrated real-time chat and task boards\",\n    \"industry\": \"Productivity / Collaboration\",\n    \"painpoint_category\": \"team coordination\",\n    \"source_thread\": \"https://www.reddit.com/r/remotework/comments/pqr678/remote_team_collaboration_issues/\"\n  }\n]\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        200
+      ],
+      "id": "dbe23e6b-c7ff-4571-b2b1-783326ff705c",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -20
+      ],
+      "id": "2f3b5e54-4b75-42c7-b615-3e3760be9598",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $now }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -280,
+        200
+      ],
+      "id": "252d2da3-f5e0-4ba9-8157-387bcee42958",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.source_thread }}",
+        "options": {
+          "historySize": 100
+        }
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        380,
+        -20
+      ],
+      "id": "c07bca49-d20d-4204-863a-38831391a925",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        -20
+      ],
+      "id": "a50961c5-259f-4e1a-b071-620dc6a29310",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Market Research Agent\n",
+        "height": 620,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -180
+      ],
+      "id": "cc2651e2-1e6e-40a1-a33f-9afd8c8c2778",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Format Data\n",
+        "height": 620,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -180
+      ],
+      "id": "398e871f-cbdb-4d47-bd5c-4b70a93fe508",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Save Result\n",
+        "height": 620,
+        "width": 260,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -180
+      ],
+      "id": "01c4873f-6908-438e-8435-3571124724a9",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Trigger",
+        "height": 620,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -180
+      ],
+      "id": "9770161a-3a41-4e92-a8df-9a1a5163115c",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        []
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f9b551e0-4da1-44cf-a0e4-8884ee3f1a04",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "95e9c29d7484fb753591208164faef581226a94efc6e32d268397da791e3efe7"
+  },
+  "id": "RoZfF2vbzbi8asWq",
+  "tags": [
+    {
+      "name": "reddit",
+      "id": "79YEBTHLN5gy7Lqf",
+      "createdAt": "2025-05-13T21:21:13.800Z",
+      "updatedAt": "2025-05-13T21:21:13.800Z"
+    },
+    {
+      "name": "agent",
+      "id": "qKO9f2wAuUl9jJ1o",
+      "createdAt": "2025-05-13T21:21:21.897Z",
+      "updatedAt": "2025-05-13T21:21:21.897Z"
+    },
+    {
+      "name": "youtube",
+      "id": "DVxYGnJKsIGmxErz",
+      "createdAt": "2025-05-13T21:21:25.336Z",
+      "updatedAt": "2025-05-13T21:21:25.336Z"
+    }
+  ]
+}
